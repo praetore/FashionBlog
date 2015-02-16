@@ -1,0 +1,12 @@
+{%  extends 'bootstrap/base.html' %}
+
+{% block title %} Modeblog {% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+    {{ moment.lang('nl') }}
+{% endblock %}
