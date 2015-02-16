@@ -1,0 +1,21 @@
+/* Algemeen */
+body {
+    background: #48CFAD;
+}
+/* Formulierstijlen */
+.form-panel {
+    padding: 1em;
+}
+
+/* Blogstijlen */
+.blog-time {
+    text-align: right;
+}
+
+.timeline dl dd .circ {
+    background: #37BC9B;
+}
+
+.timeline dl dd .time {
+    color: #ffffff;
+}

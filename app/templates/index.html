@@ -1,19 +1,39 @@
-{% extends 'bootstrap/base.html' %}
+{% extends 'base.html' %}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-md-offset-1 col-md-offset-1">
-                <h1>Mijn blog</h1>
+            <div class="col-md-offset-2 col-md-8">
+                <h1 class="text-center">Mijn blog</h1>
                 <hr/>
-                {{ wtf.quick_form(form) }}
+                <div class="panel panel-default form-panel">
+                    {{ wtf.quick_form(form) }}
+                </div>
                 {% if count > 0 %}
-                    <hr/>
-                    <ul>
-                    {% for post in posts %}
-                        <li>{{ post['content'] }}</li>
-                    {% endfor %}
-                    </ul>
+                    <div class="timeline">
+                        <dl>
+                            {% for post in posts %}
+                                {% if moment(posts[loop.index - 1]['created_at']).format('MMMM YYYY') !=
+                                        moment(post['created_at']).format('MMMM YYYY') or loop.index == 1 %}
+                                    <dt>{{ moment(post['created_at']).format('MMMM YYYY') }}</dt>
+                                {% endif %}
+                                <dd class="clearfix {{ 'pos-right' if post['id']%2 else 'pos-left' }}">
+                                    <div class="circ"></div>
+                                    <div class="time">{{ moment(post['created_at']).fromNow(refresh=True) }}</div>
+                                    <div class="events">
+                                        <div class="events-body">
+                                            <div class="events-body">
+                                                <h4 class="events-heading">
+                                                    {{ post['title'] }}
+                                                </h4>
+                                                <p>{{ post['content'] }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </dd>
+                            {% endfor %}
+                        </dl>
+                    </div>
                 {% endif %}
             </div>
         </div>
