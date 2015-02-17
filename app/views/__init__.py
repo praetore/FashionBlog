@@ -17,8 +17,6 @@ def index():
 def create_post():
     form = CreatePostForm(request.form)
     if request.method == 'POST':
-        app.logger.info('POST method called')
-        app.logger.info(form.validate_on_submit())
         if form.validate_on_submit():
             filename = upload_file(request)
             post_create_db(form, filename)
