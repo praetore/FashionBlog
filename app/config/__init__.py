@@ -15,4 +15,11 @@ class Testing(object):
 
 
 class Production(object):
-    pass
+    SECRET_KEY = os.environ['FLASK_SECRET_KEY']
+    DEBUG = False
+    TESTING = False
+    SQLALCHEMY_DATABASE_URI = os.environ['OPENSHIFT_POSTGRESQL_DB_URL']
+    DATA_DIR = os.environ['OPENSHIFT_DATA_DIR']
+    UPLOAD_FOLDER = os.path.abspath(os.path.join(DATA_DIR, 'uploads'))
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    LOG_FILE = os.path.abspath(os.path.join(DATA_DIR, 'logs', 'log.txt'))

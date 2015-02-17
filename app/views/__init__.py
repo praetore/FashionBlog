@@ -13,7 +13,7 @@ def index():
     return render_template('index.html', posts=posts, count=count)
 
 
-@app.route('/create-post', methods=['GET', 'POST'])
+@app.route('/dashboard', methods=['GET', 'POST'])
 def create_post():
     form = CreatePostForm(request.form)
     if request.method == 'POST':

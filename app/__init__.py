@@ -29,16 +29,16 @@ for directory in [
 
 import logging
 from logging import FileHandler
-file_handler = FileHandler(app.config['LOG_FILE'])
-file_handler.setLevel(logging.INFO)
-app.logger.addHandler(file_handler)
+if app.config['DEBUG']:
+    file_handler = FileHandler(app.config['LOG_FILE'])
+    file_handler.setLevel(logging.INFO)
+    app.logger.addHandler(file_handler)
 
 db = SQLAlchemy(app)
 
 from app.models import Post
 from app.handlers import allowed_file, upload_file
 from app.database import post_create_db
-
 from app.views import app
 
 db.create_all()
