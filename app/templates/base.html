@@ -1,6 +1,6 @@
 {%  extends 'bootstrap/base.html' %}
 
-{% block title %} Modeblog {% endblock %}
+{% block title %} Blog it! {% endblock %}
 {% block styles %}
     {{ super() }}
     <link rel="stylesheet" href="//cdn.madebyglutard.com/libs/bootflat/2.0.4/css/bootflat.min.css"/>
@@ -14,7 +14,8 @@
     {{ super() }}
     {{ moment.include_moment() }}
     {{ moment.lang('nl') }}
-    <script src="//cdn.madebyglutard.com/libs/bootflat/2.0.4/css/bootflat.min.css"></script>
-    <script src="//cdn.madebyglutard.com/libs/bootflat/2.0.4/css/bootflat.min.css"></script>
-    <script src="//cdn.madebyglutard.com/libs/bootflat/2.0.4/css/bootflat.min.css"></script>
+    {{ pagedown.include_pagedown() }}
+    <script src="//cdn.madebyglutard.com/libs/bootflat/2.0.4/js/icheck.min.js"></script>
+    <script src="//cdn.madebyglutard.com/libs/bootflat/2.0.4/js/jquery.fs.selecter.min.js"></script>
+    <script src="//cdn.madebyglutard.com/libs/bootflat/2.0.4/js/jquery.fs.stepper.min.js"></script>
 {% endblock %}

@@ -1,14 +1,9 @@
 {% extends 'base.html' %}
-{% import 'bootstrap/wtf.html' as wtf %}
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-md-offset-2 col-md-8">
-                <h1 class="text-center">Mijn blog</h1>
-                <hr/>
-                <div class="panel panel-default form-panel">
-                    {{ wtf.quick_form(form) }}
-                </div>
+            <div class="col-md-offset-1 col-md-10">
+                <h1 class="text-center">Blog it!</h1>
                 {% if count > 0 %}
                     <div class="timeline">
                         <dl>
@@ -26,7 +21,11 @@
                                                 <h4 class="events-heading">
                                                     {{ post['title'] }}
                                                 </h4>
-                                                <p>{{ post['content'] }}</p>
+                                                <p><img src="/images/{{ post['image'] }}"
+                                                        class="img img-responsive"><br/>
+                                                    {{ post['description'] | safe }}
+                                                </p>
+                                                <p>door {{ post.author.name }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -34,6 +33,8 @@
                             {% endfor %}
                         </dl>
                     </div>
+                {% else %}
+                    <p class="text-center">Nog geen posts</p>
                 {% endif %}
             </div>
         </div>

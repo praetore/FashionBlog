@@ -1,3 +1,5 @@
+import os
+
 __author__ = 'darryl'
 
 
@@ -6,6 +8,9 @@ class Testing(object):
     DEBUG = True
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
+    UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'uploads'))
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    LOG_FILE = 'log.txt'
 
 
 class Production(object):
