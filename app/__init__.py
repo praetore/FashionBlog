@@ -12,6 +12,7 @@ app = Flask(__name__)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 pagedown = PageDown(app)
+db = SQLAlchemy(app)
 
 try:
     current_env = os.environ['CURRENT_ENV']
@@ -20,7 +21,6 @@ except KeyError:
 
 current_env = 'app.config.' + current_env
 app.config.from_object(current_env)
-
 
 if app.config['DEBUG']:
     directory = os.path.abspath(os.path.join(basedir, 'logs'))
@@ -33,8 +33,6 @@ if app.config['DEBUG']:
     file_handler = FileHandler(app.config['LOG_FILE'])
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
-
-db = SQLAlchemy(app)
 
 from app.models import Post
 from app.database import post_create_db
