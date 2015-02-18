@@ -1,7 +1,7 @@
 # Project specific files
 test.db
+aws_config.py
 logs/
-uploads/
 
 # Created by .ignore support plugin (hsz.mobi)
 ### JetBrains template
