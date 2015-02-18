@@ -6,7 +6,7 @@
             <div class="col-md-8 col-md-offset-2 ">
                 {{ super() }}
                 <div class="panel panel-default form-panel">
-                    <form action="{{ url_for('create_post') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ url_for('create_post') }}" method="post" enctype="multipart/form-data">
                         <p>Hulp nodig met <a href="https://help.github.com/articles/markdown-basics/"
                                 target="_blank">Markdown</a>?</p>
                         {{ wtf.quick_form(form) }}
