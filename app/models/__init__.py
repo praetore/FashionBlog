@@ -1,7 +1,9 @@
 from datetime import datetime
 import bleach
+from flask.ext.login import UserMixin
 from markdown import markdown
 from sqlalchemy import ForeignKey
+from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 
 __author__ = 'darryl'
@@ -20,6 +22,7 @@ class Post(db.Model):
         self.image = image
         self.description = self.parse(description)
 
+    # Custom method for converting Markdown to HTML
     @classmethod
     def parse(cls, value):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
@@ -30,12 +33,19 @@ class Post(db.Model):
             tags=allowed_tags, strip=True))
 
 
-class Author(db.Model):
+class Author(db.Model, UserMixin):
     __tablename__ = 'authors'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=False)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    pwdhash = db.Column(db.String, nullable=False)
 
-    def __init__(self, name):
+    def __init__(self, name, password, email):
         self.name = name
+        self.pwdhash = generate_password_hash(password)
+        self.email = email
+
+    def check_password(self, password):
+        return check_password_hash(self.pwdhash, password)

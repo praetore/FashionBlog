@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from flask.ext.bootstrap import Bootstrap
+from flask.ext.login import LoginManager
 from flask.ext.moment import Moment
 from flask.ext.pagedown import PageDown
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -13,6 +14,7 @@ bootstrap = Bootstrap(app)
 moment = Moment(app)
 pagedown = PageDown(app)
 db = SQLAlchemy(app)
+login_manager = LoginManager(app)
 
 try:
     current_env = os.environ['CURRENT_ENV']
@@ -34,8 +36,18 @@ if app.config['DEBUG']:
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
 
-from app.models import Post
+from app.models import Post, Author
 from app.database import post_create_db
+
+login_manager.session_protection = 'strong'
+login_manager.login_view = 'login'
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Author.query.get(int(user_id))
+
 from app.views import app
 
+db.drop_all()
 db.create_all()
