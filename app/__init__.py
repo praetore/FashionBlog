@@ -24,6 +24,9 @@ except KeyError:
 current_env = 'app.config.' + current_env
 app.config.from_object(current_env)
 
+login_manager.session_protection = 'strong'
+login_manager.login_view = 'login'
+
 if app.config['DEBUG']:
     directory = os.path.abspath(os.path.join(basedir, 'logs'))
     if not os.path.exists(directory):
@@ -38,14 +41,7 @@ if app.config['DEBUG']:
 
 from app.models import Post, Author
 from app.database import post_create_db
-
-login_manager.session_protection = 'strong'
-login_manager.login_view = 'login'
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return Author.query.get(int(user_id))
+from app.views import login_manager
 
 from app.views import app
 

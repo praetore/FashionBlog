@@ -2,7 +2,7 @@ import os
 
 __author__ = 'darryl'
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+basedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', '..')
 
 
 class Config(object):
@@ -13,8 +13,8 @@ class Config(object):
 class Testing(Config):
     DEBUG = True
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join('..', '..', 'test.db')
-    LOG_FILE = os.path.join(basedir, '..', '..', 'logs', 'log.txt')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'test.db')
+    LOG_FILE = os.path.join(basedir, 'logs', 'log.txt')
 
     try:
         import aws_config
@@ -30,7 +30,7 @@ class Production(Config):
     DEBUG = False
     TESTING = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-                              'sqlite:///' + os.path.join('..', '..', 'test.db')
+                              'sqlite:///' + os.path.join(basedir, 'test.db')
     AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
     AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
     AWS_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME')

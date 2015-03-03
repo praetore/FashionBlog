@@ -1,7 +1,14 @@
 /* Algemeen */
 body {
-    background: #48CFAD;
+    background: #CCD1D9;
+    padding-top: 60px;
 }
+@media (max-width: 980px) {
+    body {
+        padding-top: 0;
+    }
+}
+
 /* Formulierstijlen */
 .form-panel {
     padding: 1em;
@@ -14,7 +21,7 @@ body {
 }
 
 .timeline dl dd .circ {
-    background: #37BC9B;
+    background: #AAB2BD;
 }
 
 .timeline dl dd .time {
