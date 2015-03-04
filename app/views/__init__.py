@@ -24,7 +24,7 @@ def get_current_user():
 def index():
     posts = Post.query.all()
     count = Post.query.count()
-    return render_template('index.html', posts=posts, count=count)
+    return render_template('post-list.html', posts=posts, count=count)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
@@ -67,10 +67,10 @@ def login():
         existing_user = Author.query.filter_by(email=email).first()
         if not existing_user:
             flash('Deze gebruiker bestaat niet', 'danger')
-            return render_template('login.html', form=form)
+            return render_template('form-display.html', form=form, form_action='login')
         if not existing_user.check_password(password):
             flash('Foutief wachtwoord ingevoerd', 'danger')
-            return render_template('login.html', form=form)
+            return render_template('form-display.html', form=form, form_action='login')
 
         login_user(existing_user)
         flash('Je bent nu ingelogd.', 'success')
@@ -79,7 +79,7 @@ def login():
     if form.errors:
         flash(form.errors, 'danger')
 
-    return render_template('login.html', form=form)
+    return render_template('form-display.html', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -96,7 +96,7 @@ def register():
                 'Er is al een account geregistreerd onder dit e-mailadres.',
                 'warning'
             )
-            return render_template('register.html', form=form)
+            return render_template('form-display.html', form=form, form_action='register')
 
         new_user = author_create_db(name, password, email)
         app.logger.info(new_user.name)
@@ -106,7 +106,7 @@ def register():
     if form.errors:
         flash(form.errors, 'danger')
 
-    return render_template('register.html', form=form)
+    return render_template('form-display.html', form=form, form_action='register')
 
 
 @app.route('/logout')

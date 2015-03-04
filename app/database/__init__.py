@@ -12,8 +12,8 @@ def post_create_db(author_id=None, form=None, image=None):
     db.session.commit()
 
 
-def author_create_db(name, password, email):
-    author = Author(name, password, email)
+def author_create_db(name=None, password=None, email=None):
+    author = Author(name=name, password=password, email=email)
     db.session.add(author)
     db.session.commit()
     return author
