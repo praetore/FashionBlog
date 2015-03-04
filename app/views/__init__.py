@@ -99,7 +99,7 @@ def register():
             return render_template('form-display.html', form=form, form_action='register')
 
         new_user = author_create_db(name, password, email)
-        app.logger.info(new_user.name)
+        app.logger.info("Account %s created" % new_user.name)
         flash('Account aangemaakt. Je kunt nu inloggen', 'success')
         return redirect(url_for('index'))
 

@@ -16,18 +16,14 @@ pagedown = PageDown(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
-try:
-    current_env = os.environ['CURRENT_ENV']
-except KeyError:
-    current_env = 'Testing'
-
+current_env = os.environ.get('CURRENT_ENV') or 'Testing'
 current_env = 'app.config.' + current_env
 app.config.from_object(current_env)
 
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'login'
 
-if app.config['DEBUG']:
+if app.debug:
     directory = os.path.abspath(os.path.join(basedir, 'logs'))
     if not os.path.exists(directory):
         os.makedirs(directory)
