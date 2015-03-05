@@ -79,7 +79,7 @@ def login():
     if form.errors:
         flash(form.errors, 'danger')
 
-    return render_template('form-display.html', form=form)
+    return render_template('form-display.html', form=form, form_action='login')
 
 
 @app.route('/register', methods=['GET', 'POST'])
