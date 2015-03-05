@@ -9,7 +9,6 @@
                         <tr>
                             <th>#</th>
                             <th>Datum aangemaakt</th>
-                            <th>Geplaatst door</th>
                             <th>Foto URL</th>
                             <th>Acties</th>
                         </tr>
@@ -18,8 +17,7 @@
                         {% for post in posts %}
                             <tr>
                                 <td>{{ post.id }}</td>
-                                <td>{{ post.created_at }}</td>
-                                <td>{{ post.author.name }}</td>
+                                <td>{{ moment(post.created_at).format('DD MMMM YYYY') }}</td>
                                 <td>{{ post.image }}</td>
                                 <td class="text-center">
                                     <a href="{{ url_for('remove_post', post_id=post.id) }}" >
