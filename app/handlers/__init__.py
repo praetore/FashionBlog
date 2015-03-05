@@ -34,6 +34,11 @@ def get_image(filename):
     return url
 
 
+def delete_image(filename):
+    bucket = retrieve_bucket()
+    bucket.delete_key(filename)
+
+
 def retrieve_bucket():
     # Initialize S3
     s3 = S3Connection(

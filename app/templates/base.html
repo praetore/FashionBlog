@@ -24,7 +24,7 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated() %}
                     <li><p class="navbar-text">Ingelogd als <a class="text-success"
-                                                               href="{{ url_for('dashboard') }}">
+                                                               href="{{ url_for('post_list') }}">
                         {{ current_user.name }} <span class="glyphicon glyphicon-home"></span></a></p></li>
                     <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Uitloggen</a></li>
                 {% else %}

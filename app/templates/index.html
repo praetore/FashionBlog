@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-1 col-md-10">
+                {{ super() }}
+                {% if count > 0 %}
+                    <div class="timeline">
+                        <dl>
+                            {% for post in posts %}
+                                {% if moment(posts[loop.index - 1]['created_at']).format('MMMM YYYY') !=
+                                        moment(post['created_at']).format('MMMM YYYY') or loop.index == 1 %}
+                                    <dt>{{ moment(post['created_at']).format('MMMM YYYY') }}</dt>
+                                {% endif %}
+                                <dd class="clearfix {{ 'pos-right' if post['id']%2 else 'pos-left' }}">
+                                    <div class="circ"></div>
+                                    <div class="time">{{ moment(post['created_at']).fromNow(refresh=True) }}</div>
+                                    <div class="events">
+                                        <div class="events-body">
+                                            <div class="events-body">
+                                                <h4 class="events-heading">
+                                                    {{ post['title'] }}
+                                                </h4>
+                                                <p><img src="/images/{{ post['image'] }}"
+                                                        class="img img-responsive"><br/>
+                                                    {{ post['description'] | safe }}
+                                                </p>
+                                                <p>door {{ post.author.name }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </dd>
+                            {% endfor %}
+                        </dl>
+                    </div>
+                {% else %}
+                    <p class="text-center">Nog geen posts</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

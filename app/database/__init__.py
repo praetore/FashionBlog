@@ -17,3 +17,9 @@ def author_create_db(name=None, password=None, email=None):
     db.session.add(author)
     db.session.commit()
     return author
+
+
+def post_remove_db(post_id=None):
+    post = Post.query.get_or_404(post_id)
+    db.session.delete(post)
+    db.session.commit()

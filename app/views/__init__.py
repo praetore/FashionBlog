@@ -2,8 +2,8 @@ import os
 from flask import render_template, request, flash, url_for, redirect, g
 from flask.ext.login import login_required, current_user, login_user, logout_user
 from app import app, Post, post_create_db, login_manager
-from app.database import author_create_db
-from app.handlers import store_image, get_image
+from app.database import author_create_db, post_remove_db
+from app.handlers import store_image, get_image, delete_image
 from app.models import Author
 from app.views.forms import CreatePostForm, LoginForm, RegistrationForm
 
@@ -24,12 +24,20 @@ def get_current_user():
 def index():
     posts = Post.query.all()
     count = Post.query.count()
-    return render_template('post-list.html', posts=posts, count=count)
+    return render_template('index.html', posts=posts, count=count)
 
 
-@app.route('/dashboard', methods=['GET', 'POST'])
+@app.route('/post-list')
 @login_required
-def dashboard():
+def post_list():
+    author = Author.query.filter_by(id=current_user.id).first()
+    posts = Post.query.filter_by(author=author).all()
+    return render_template('post-list.html', posts=posts)
+
+
+@app.route('/create-post', methods=['GET', 'POST'])
+@login_required
+def create_post():
     form = CreatePostForm(request.form)
     if form.validate_on_submit():
         app.logger.info('Using bucket for image store')
@@ -40,8 +48,17 @@ def dashboard():
         post_create_db(author_id=current_user.id, form=form, image=file.filename)
         app.logger.info('Post created')
         flash("Post aangemaakt", 'success')
-        return redirect(url_for('index'))
+        return redirect(url_for('post_list'))
     return render_template('create-post.html', form=form)
+
+
+@app.route('/remove-post/<int:post_id>')
+@login_required
+def remove_post(post_id):
+    filename = Post.query.get(post_id).image
+    post_remove_db(post_id)
+    delete_image(filename)
+    return redirect(url_for('post_list'))
 
 
 @app.route('/images/<filename>')
@@ -58,7 +75,7 @@ def images(path):
 def login():
     if current_user.is_authenticated():
         flash('Je bent al ingelogd.', 'info')
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('create_post'))
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate_on_submit():
         email = request.form.get('email')
@@ -74,7 +91,7 @@ def login():
 
         login_user(existing_user)
         flash('Je bent nu ingelogd.', 'success')
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('post_list'))
 
     if form.errors:
         flash(form.errors, 'danger')
