@@ -15,6 +15,12 @@ body {
     margin-top: 30px;
 }
 
+.checkbox label, .radio label {
+    position: relative;
+    left: 15px;
+    top: -2px;
+}
+
 /* Blogstijlen */
 .blog-time {
     text-align: right;
@@ -26,4 +32,12 @@ body {
 
 .timeline dl dd .time {
     color: #ffffff;
+}
+
+/* Table fix */
+.table-container {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    height: 100%;
 }

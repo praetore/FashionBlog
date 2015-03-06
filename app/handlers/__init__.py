@@ -66,3 +66,8 @@ def retrieve_bucket():
         app.logger.info('Bucket configuration set')
     app.logger.info('Returning bucket')
     return bucket
+
+
+def list_images():
+    bucket = retrieve_bucket()
+    return [k.name for k in bucket.list()]

@@ -3,9 +3,9 @@ from flask import render_template, request, flash, url_for, redirect, g
 from flask.ext.login import login_required, current_user, login_user, logout_user
 from app import app, Post, post_create_db, login_manager
 from app.database import author_create_db, post_remove_db
-from app.handlers import store_image, get_image, delete_image
+from app.handlers import store_image, get_image, delete_image, list_images
 from app.models import Author
-from app.views.forms import CreatePostForm, LoginForm, RegistrationForm
+from app.views.forms import CreatePostForm, LoginForm, RegistrationForm, UploadImageForm
 
 __author__ = 'darryl'
 
@@ -32,7 +32,7 @@ def index():
 def post_list():
     author = Author.query.filter_by(id=current_user.id).first()
     posts = Post.query.filter_by(author=author).all()
-    return render_template('post-list.html', posts=posts)
+    return render_template('post-overview.html', posts=posts)
 
 
 @app.route('/create-post', methods=['GET', 'POST'])
@@ -40,25 +40,39 @@ def post_list():
 def create_post():
     form = CreatePostForm(request.form)
     if form.validate_on_submit():
-        app.logger.info('Using bucket for image store')
-        file = request.files['image']
-        app.logger.info('Processing ' + file.filename)
-        store_image(file)
-        app.logger.info('Image stored in bucket')
-        post_create_db(author_id=current_user.id, form=form, image=file.filename)
+        post_create_db(author_id=current_user.id, form=form)
         app.logger.info('Post created')
         flash("Post aangemaakt", 'success')
         return redirect(url_for('post_list'))
-    return render_template('create-post.html', form=form)
+    return render_template('dashboard-component.html', form=form, form_action='create_post')
 
 
 @app.route('/remove-post/<int:post_id>')
 @login_required
 def remove_post(post_id):
-    filename = Post.query.get(post_id).image
     post_remove_db(post_id)
-    delete_image(filename)
     return redirect(url_for('post_list'))
+
+
+@app.route('/remove-image/<filename>')
+@login_required
+def remove_image(filename):
+    delete_image(filename)
+    return redirect(url_for('image_list'))
+
+
+@app.route('/list-images', methods=['POST', 'GET'])
+@login_required
+def image_list():
+    form = UploadImageForm(request.form)
+    if form.validate_on_submit():
+        app.logger.info('Using bucket %s for image store' % app.config['AWS_BUCKET_NAME'])
+        file = request.files['image']
+        app.logger.info('Processing %s' % file.filename)
+        store_image(file)
+        app.logger.info('%s stored in bucket' % file.filename)
+    s3_images = list_images()
+    return render_template('image-upload.html', form=form, images=s3_images)
 
 
 @app.route('/images/<filename>')
@@ -84,10 +98,10 @@ def login():
         existing_user = Author.query.filter_by(email=email).first()
         if not existing_user:
             flash('Deze gebruiker bestaat niet', 'danger')
-            return render_template('form-display.html', form=form, form_action='login')
+            return render_template('dashboard-component.html', form=form, form_action='login')
         if not existing_user.check_password(password):
             flash('Foutief wachtwoord ingevoerd', 'danger')
-            return render_template('form-display.html', form=form, form_action='login')
+            return render_template('dashboard-component.html', form=form, form_action='login')
 
         login_user(existing_user)
         flash('Je bent nu ingelogd.', 'success')
@@ -96,7 +110,7 @@ def login():
     if form.errors:
         flash(form.errors, 'danger')
 
-    return render_template('form-display.html', form=form, form_action='login')
+    return render_template('dashboard-component.html', form=form, form_action='login')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -113,17 +127,17 @@ def register():
                 'Er is al een account geregistreerd onder dit e-mailadres.',
                 'warning'
             )
-            return render_template('form-display.html', form=form, form_action='register')
+            return render_template('dashboard-component.html', form=form, form_action='register')
 
         new_user = author_create_db(name, password, email)
         app.logger.info("Account %s created" % new_user.name)
         flash('Account aangemaakt. Je kunt nu inloggen', 'success')
-        return redirect(url_for('index'))
+        return redirect(url_for('login'))
 
     if form.errors:
         flash(form.errors, 'danger')
 
-    return render_template('form-display.html', form=form, form_action='register')
+    return render_template('dashboard-component.html', form=form, form_action='register')
 
 
 @app.route('/logout')

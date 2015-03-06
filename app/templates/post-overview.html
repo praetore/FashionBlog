@@ -1,4 +1,4 @@
-{% extends 'dashboard.html' %}
+{% extends 'dashboard-menu.html' %}
 {% block content %}
     {{ super() }}
     <div class="container">
@@ -7,18 +7,16 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>Titel</th>
                             <th>Datum aangemaakt</th>
-                            <th>Foto URL</th>
                             <th>Acties</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for post in posts %}
                             <tr>
-                                <td>{{ post.id }}</td>
+                                <td>{{ post.title }}</td>
                                 <td>{{ moment(post.created_at).format('DD MMMM YYYY') }}</td>
-                                <td>{{ post.image }}</td>
                                 <td class="text-center">
                                     <a href="{{ url_for('remove_post', post_id=post.id) }}" >
                                         <button class="btn-danger">

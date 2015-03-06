@@ -4,10 +4,10 @@ from app.models import Post, Author
 __author__ = 'darryl'
 
 
-def post_create_db(author_id=None, form=None, image=None):
-    description = form.description.data
+def post_create_db(author_id=None, form=None):
+    content = form.content.data
     author = Author.query.get(author_id)
-    post = Post(description=description, author=author, image=image)
+    post = Post(content=content, author=author)
     db.session.add(post)
     db.session.commit()
 

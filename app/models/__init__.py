@@ -13,14 +13,14 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
-    description = db.Column(db.Text, nullable=False)
+    title = db.Column(db.String, nullable=False)
+    content = db.Column(db.Text, nullable=False)
     author_id = db.Column(db.Integer, ForeignKey('authors.id'))
-    image = db.Column(db.String, nullable=False)
 
-    def __init__(self, author=None, description=None, image=None):
+    def __init__(self, title=None, author=None, content=None):
+        self.title = title
         self.author_id = author.id
-        self.image = image
-        self.description = self.parse(description)
+        self.content = self.parse(content)
 
     # Custom method for converting Markdown to HTML
     @classmethod

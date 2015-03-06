@@ -7,9 +7,18 @@ __author__ = 'darryl'
 
 
 class CreatePostForm(Form):
-    description = PageDownField("Beschrijving (in Markdown)", validators=[DataRequired()])
-    image = FileField('Selecteer een afbeelding')
+    title = StringField('Titel', validators=[InputRequired()])
+    content = PageDownField("Inhoud "
+                                "(in <a href=\"https://help.github.com/articles/"
+                                "github-flavored-markdown/\">Markdown</a>)",
+                                validators=[DataRequired()])
+    # TODO: tagsinput toevoegen
     submit = SubmitField('Posten')
+
+
+class UploadImageForm(Form):
+    image = FileField('Selecteer een afbeelding')
+    submit = SubmitField('Uploaden')
 
 
 class RegistrationForm(Form):
