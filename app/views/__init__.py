@@ -4,7 +4,7 @@ from flask.ext.login import login_required, current_user, login_user, logout_use
 from app import app, Post, post_create_db, login_manager
 from app.database import author_create_db, post_remove_db
 from app.handlers import store_image, get_image, delete_image, list_images
-from app.models import Author, Tag
+from app.models import Author
 from app.views.forms import CreatePostForm, LoginForm, RegistrationForm, UploadImageForm
 
 __author__ = 'darryl'

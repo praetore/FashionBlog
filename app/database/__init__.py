@@ -1,4 +1,4 @@
-from app import db, app
+from app import db
 from app.models import Post, Author, Tag
 
 __author__ = 'darryl'
