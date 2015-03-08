@@ -1,13 +1,18 @@
-from app import db
-from app.models import Post, Author
+from app import db, app
+from app.models import Post, Author, Tag
 
 __author__ = 'darryl'
 
 
 def post_create_db(author_id=None, form=None):
     content = form.content.data
+    title = form.title.data
+    tags = form.tags.data
     author = Author.query.get(author_id)
-    post = Post(content=content, author=author)
+    post = Post(content=content, author=author, title=title)
+    for t in tags:
+        tag = Tag(t)
+        post.tags.append(tag)
     db.session.add(post)
     db.session.commit()
 

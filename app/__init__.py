@@ -41,4 +41,5 @@ from app.views import login_manager
 
 from app.views import app
 
+db.drop_all()
 db.create_all()

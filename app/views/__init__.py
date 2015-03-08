@@ -4,7 +4,7 @@ from flask.ext.login import login_required, current_user, login_user, logout_use
 from app import app, Post, post_create_db, login_manager
 from app.database import author_create_db, post_remove_db
 from app.handlers import store_image, get_image, delete_image, list_images
-from app.models import Author
+from app.models import Author, Tag
 from app.views.forms import CreatePostForm, LoginForm, RegistrationForm, UploadImageForm
 
 __author__ = 'darryl'
@@ -27,10 +27,17 @@ def index():
     return render_template('index.html', posts=posts, count=count)
 
 
+@app.route('/<tag>')
+def posts_by_tag(tag):
+    posts = [post for post in Post.query.all() if tag in [tag.name for tag in post.tags]]
+    count = len(posts)
+    return render_template('index.html', posts=posts, count=count)
+
+
 @app.route('/post-list')
 @login_required
 def post_list():
-    author = Author.query.filter_by(id=current_user.id).first()
+    author = Author.query.get(current_user.id)
     posts = Post.query.filter_by(author=author).all()
     return render_template('post-overview.html', posts=posts)
 
