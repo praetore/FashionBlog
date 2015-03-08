@@ -4,7 +4,7 @@ from flask.ext.login import login_required, current_user, login_user, logout_use
 from app import app, Post, post_create_db, login_manager
 from app.database import author_create_db, post_remove_db
 from app.handlers import store_image, get_image, delete_image, list_images
-from app.models import Author
+from app.models import Author, Tag
 from app.views.forms import CreatePostForm, LoginForm, RegistrationForm, UploadImageForm
 
 __author__ = 'darryl'
@@ -29,8 +29,8 @@ def index():
 
 @app.route('/<tag>')
 def posts_by_tag(tag):
-    posts = [post for post in Post.query.all() if tag in [tag.name for tag in post.tags]]
-    count = len(posts)
+    posts = Post.query.join(Post.tags).filter(Tag.name.in_([tag])).all()
+    count = Post.query.join(Post.tags).filter(Tag.name.in_([tag])).count()
     return render_template('index.html', posts=posts, count=count)
 
 
