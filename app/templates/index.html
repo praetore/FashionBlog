@@ -8,7 +8,7 @@
                 {% if count > 0 %}
                     <div class="timeline">
                         <dl>
-                            {% for post in posts %}
+                            {% for post in posts|sort(attribute="created_at", reverse=True) %}
                                 {% if moment(posts[loop.index - 1]['created_at']).format('MMMM YYYY') !=
                                         moment(post['created_at']).format('MMMM YYYY') or loop.index == 1 %}
                                     <dt>{{ moment(post['created_at']).format('MMMM YYYY') }}</dt>

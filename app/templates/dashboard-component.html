@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'dashboard-menu.html' %}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block content %}
+    {{ super() }}
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                {{ super() }}
                 <div class="panel panel-default form-panel">
                     <form action="{{ url_for(form_action) }}" method="post">
                         {{ wtf.quick_form(form) }}
