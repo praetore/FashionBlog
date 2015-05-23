@@ -66,6 +66,7 @@ def create_post():
 @login_required
 def remove_post(post_id):
     post_remove_db(post_id)
+    flash('Post verwijderd', 'warning')
     return redirect(url_for('post_list'))
 
 
@@ -73,6 +74,7 @@ def remove_post(post_id):
 @login_required
 def remove_image(filename):
     handler.delete_image(filename)
+    flash('Afbeelding verwijderd', 'warning')
     return redirect(url_for('image_list'))
 
 
