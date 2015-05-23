@@ -1,10 +1,13 @@
 import abc
 import os
+
 from boto.exception import S3ResponseError
 from boto.s3.connection import Location, S3Connection
 from boto.s3.cors import CORSConfiguration
 from werkzeug.utils import secure_filename
+
 from app import app
+
 
 __author__ = 'darryl'
 

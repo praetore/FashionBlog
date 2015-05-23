@@ -1,11 +1,14 @@
 import os
+
 from flask import render_template, request, flash, url_for, redirect, g, send_from_directory
 from flask.ext.login import login_required, current_user, login_user, logout_user
+
 from app import app, Post, post_create_db, login_manager
 from app.database import author_create_db, post_remove_db
 from app.handlers import LocalStorage, S3Storage
 from app.models import Author, Tag
 from app.views.forms import CreatePostForm, LoginForm, RegistrationForm, UploadImageForm
+
 
 __author__ = 'darryl'
 

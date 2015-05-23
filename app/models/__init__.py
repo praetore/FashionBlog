@@ -1,10 +1,11 @@
 from datetime import datetime
-import bleach
+
 from flask.ext.login import UserMixin
-from markdown import markdown
 from sqlalchemy import ForeignKey
 from werkzeug.security import generate_password_hash, check_password_hash
+
 from app import db
+
 
 __author__ = 'darryl'
 

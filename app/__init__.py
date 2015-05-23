@@ -1,4 +1,5 @@
 import os
+
 from flask import Flask
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.login import LoginManager
@@ -6,7 +7,9 @@ from flask.ext.markdown import Markdown
 from flask.ext.moment import Moment
 from flask.ext.pagedown import PageDown
 from flask.ext.sqlalchemy import SQLAlchemy
+
 from app.config import basedir
+
 
 __author__ = 'darryl'
 
