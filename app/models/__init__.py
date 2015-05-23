@@ -29,17 +29,7 @@ class Post(db.Model):
     def __init__(self, title=None, author=None, content=None):
         self.title = title
         self.author_id = author.id
-        self.content = self.parse(content)
-
-    # Custom method for converting Markdown to HTML
-    @classmethod
-    def parse(cls, value):
-        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
-                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
-                        'h1', 'h2', 'h3', 'p', 'img']
-        return bleach.linkify(bleach.clean(
-            markdown(value, output_format='html'),
-            tags=allowed_tags, strip=True))
+        self.content = content
 
 
 class Author(db.Model, UserMixin):

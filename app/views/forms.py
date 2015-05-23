@@ -26,7 +26,7 @@ class TagListField(Field):
 class CreatePostForm(Form):
     title = StringField('Titel', validators=[InputRequired()])
     content = PageDownField("Inhoud "
-                                "(in <a href=\"https://help.github.com/articles/markdown-basics/"
+                                "(in <a href=\"http://markdown-guide.readthedocs.org/en/latest/basics.html"
                                 "\">Markdown</a>)",
                                 validators=[DataRequired()])
     tags = TagListField('Tags')

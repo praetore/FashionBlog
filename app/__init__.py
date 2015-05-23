@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.login import LoginManager
+from flask.ext.markdown import Markdown
 from flask.ext.moment import Moment
 from flask.ext.pagedown import PageDown
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -13,6 +14,7 @@ app = Flask(__name__)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 pagedown = PageDown(app)
+md = Markdown(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
