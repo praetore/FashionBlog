@@ -21,6 +21,10 @@ body {
     top: -2px;
 }
 
+.bootstrap-tagsinput {
+    display: block;
+}
+
 /* Blogstijlen */
 .blog-time {
     text-align: right;
@@ -32,6 +36,10 @@ body {
 
 .timeline dl dd .time {
     color: #ffffff;
+}
+
+.label-info > a {
+    color: #fff;
 }
 
 /* Table fix */

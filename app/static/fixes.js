@@ -5,5 +5,6 @@
 $(
     function () {
         $('.events-body img').addClass('img-responsive');
+        $('input#tags').attr('data-role', 'tagsinput');
     }
 );
