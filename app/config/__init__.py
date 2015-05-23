@@ -14,16 +14,8 @@ class Testing(Config):
     DEBUG = True
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'test.db')
-    LOG_FILE = os.path.join(basedir, 'logs', 'log.txt')
-
-    try:
-        import aws_config
-
-        AWS_ACCESS_KEY = aws_config.AWS_ACCESS_KEY
-        AWS_SECRET_KEY = aws_config.AWS_SECRET_KEY
-        AWS_BUCKET_NAME = aws_config.AWS_BUCKET_NAME
-    except ImportError:
-        pass
+    STORAGE_DIRECTORY = os.path.abspath(os.path.join(basedir, 'storage'))
+    LOG_FILE = os.path.join(STORAGE_DIRECTORY, 'log.txt')
 
 
 class Production(Config):

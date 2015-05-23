@@ -1,13 +1,18 @@
 import os
-from flask import render_template, request, flash, url_for, redirect, g
+from flask import render_template, request, flash, url_for, redirect, g, send_from_directory
 from flask.ext.login import login_required, current_user, login_user, logout_user
 from app import app, Post, post_create_db, login_manager
 from app.database import author_create_db, post_remove_db
-from app.handlers import store_image, get_image, delete_image, list_images
+from app.handlers import LocalStorage, S3Storage
 from app.models import Author, Tag
 from app.views.forms import CreatePostForm, LoginForm, RegistrationForm, UploadImageForm
 
 __author__ = 'darryl'
+
+if app.config["TESTING"]:
+    handler = LocalStorage()
+else:
+    handler = S3Storage()
 
 
 @login_manager.user_loader
@@ -64,7 +69,7 @@ def remove_post(post_id):
 @app.route('/remove-image/<filename>')
 @login_required
 def remove_image(filename):
-    delete_image(filename)
+    handler.delete_image(filename)
     return redirect(url_for('image_list'))
 
 
@@ -73,18 +78,18 @@ def remove_image(filename):
 def image_list():
     form = UploadImageForm(request.form)
     if form.validate_on_submit():
-        app.logger.info('Using bucket %s for image store' % app.config['AWS_BUCKET_NAME'])
-        file = request.files['image']
-        app.logger.info('Processing %s' % file.filename)
-        store_image(file)
-        app.logger.info('%s stored in bucket' % file.filename)
-    s3_images = list_images()
+        image = request.files['image']
+        app.logger.info('Processing %s' % image.filename)
+        handler.store_image(image)
+    s3_images = handler.list_images()
     return render_template('image-upload.html', form=form, images=s3_images)
 
 
 @app.route('/images/<filename>')
 def get_images(filename):
-    return redirect(get_image(filename))
+    if app.debug:
+        return send_from_directory(app.config["STORAGE_DIRECTORY"], filename)
+    return redirect(handler.get_image(filename))
 
 
 @app.route('/img/<path:path>')

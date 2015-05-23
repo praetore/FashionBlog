@@ -16,15 +16,14 @@ pagedown = PageDown(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
-current_env = os.environ.get('CURRENT_ENV') or 'Testing'
-current_env = 'app.config.' + current_env
+current_env = 'app.config.{}'.format(os.environ.get('CURRENT_ENV', 'Testing'))
 app.config.from_object(current_env)
 
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'login'
 
 if app.debug:
-    directory = os.path.abspath(os.path.join(basedir, 'logs'))
+    directory = app.config["STORAGE_DIRECTORY"]
     if not os.path.exists(directory):
         os.makedirs(directory)
 
@@ -37,8 +36,9 @@ if app.debug:
 
 from app.models import Post, Author
 from app.database import post_create_db
-from app.views import login_manager
-
-from app.views import app
+from app.views import login_manager, app
 
 db.create_all()
+
+if __name__ == '__main__':
+    app.run()

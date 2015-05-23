@@ -1,6 +1,5 @@
 # Project specific files
 test.db
-aws_config.py
 logs/
 
 # Created by .ignore support plugin (hsz.mobi)
