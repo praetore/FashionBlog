@@ -87,7 +87,7 @@ def image_list():
 
 @app.route('/images/<filename>')
 def get_images(filename):
-    if app.debug:
+    if app.config["TESTING"]:
         return send_from_directory(app.config["STORAGE_DIRECTORY"], filename)
     return redirect(handler.get_image(filename))
 
